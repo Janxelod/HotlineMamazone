@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ManagerPhoneScript : MonoBehaviour {
-
+public class ScoreManager : MonoBehaviour {
+	public GameObject[] mistakesList;
 	// Use this for initialization
 	void Start () {
 	
@@ -11,8 +11,5 @@ public class ManagerPhoneScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-	}
-	public void ClickPhone(string key){
-		Debug.Log("Click: "+key);
 	}
 }
