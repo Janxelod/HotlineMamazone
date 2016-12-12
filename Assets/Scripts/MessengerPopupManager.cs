@@ -11,7 +11,11 @@ public class MessengerPopupManager : MonoBehaviour {
 
 	}
 	public void showMessengerPopUp(){
+		Invoke("ShowMessengerPopUp2",3.5f);
+	}
+	void ShowMessengerPopUp2() {
 		if(currentMessengerWindows<messengerPopUpList.Length) {
+			GetComponent<AudioSource>().Play();
 			messengerPopUpList[currentMessengerWindows].SetActive(true);
 			currentMessengerWindows++;	
 		}

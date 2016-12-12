@@ -8,8 +8,13 @@ public class GameManager : MonoBehaviour {
 	public PhoneManager phoneManager;
 	public PlayerManager playerManager;
 	public MessengerPopupManager messengerPopUpManager;
+	public ScoreManager scoreManager;
 	public GameState currentState;
 	public float waitTimeNextDialogue;
+	public int currentMistakes;
+	public int MAX_CURRENT_MISTAKE;
+	public GamerOverManager gameOverManager;
+	//public GameObject gameOverScreen;
 	// Use this for initialization
 	void Start () {
 		dialogueManager = GetComponent<DialogueManager>();
@@ -19,6 +24,7 @@ public class GameManager : MonoBehaviour {
 			playerManager = player.GetComponent<PlayerManager>();	
 		}
 		messengerPopUpManager = GameObject.Find("Messenger").GetComponent<MessengerPopupManager>();
+		scoreManager = GameObject.Find("Score").GetComponent<ScoreManager>();
 		currentState = GameState.InitGame;
 
 	}
@@ -48,29 +54,52 @@ public class GameManager : MonoBehaviour {
 		if(playerManager.currentState == PlayerManager.States.MakeACall) {
 			switch(phoneManager.currentPhoneCallState) {
 				case PhoneManager.PhoneCallState.Correct: 
-					//??
+					//Graphic and audioFeedback??
+					currentState = GameState.ReinitManagers;
 				break;
 				default:
-					messengerPopUpManager.showMessengerPopUp();
+				{
+					scoreManager.showMistake(currentMistakes);
+					currentMistakes++;
+					if(currentMistakes == MAX_CURRENT_MISTAKE) {
+						currentState = GameState.None;
+						dialogueManager.StopDialogue();
+						CancelInvoke();
+						Invoke("StartGameOverState",3.5f);
+					}else {
+						messengerPopUpManager.showMessengerPopUp();			
+						currentState = GameState.ReinitManagers;
+					}
+				}
 				break;
-				/*case PhoneManager.PhoneCallState.Incorrect: 
-					
-				break;
-				case PhoneManager.PhoneCallState.Nothing: 
-					
-				break;*/
 			}
-			//playerManager.makeAcall = false;
 			playerManager.currentState = PlayerManager.States.None;
-			currentState = GameState.ReinitManagers;
+			//currentState = GameState.ReinitManagers;
 		}
 	}
+	void StartGameOverState() {
+		currentState = GameState.GameOver;
+	}
+	void StartMediumEndingState() {
+		currentState = GameState.MediumEnding;
+	}
+	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
+	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
+	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
+	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
+	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
 	void ReinitManagersState() {
 		dialogueManager.StopDialogue();
 		dialogueManager.currentDialogueIndex++;
-		currentState = GameState.None;
-		Invoke("StartNewCall",waitTimeNextDialogue);
-
+		if(dialogueManager.isEndGame()){
+			dialogueManager.StopDialogue();
+			CancelInvoke();
+			Invoke("StartMediumEndingState",3.5f);
+			Debug.Log("Is end game");
+		}else {
+			currentState = GameState.None;
+			Invoke("StartNewCall",waitTimeNextDialogue);	
+		}
 	}
 	void StartNewCall() {
 		currentState = GameState.InitGame;
@@ -90,20 +119,31 @@ public class GameManager : MonoBehaviour {
 			case GameState.ReinitManagers:
 				ReinitManagersState();
 			break;
+			case GameState.MediumEnding:
+				StartMediumEnding();
+				currentState = GameState.None;
+			break;
 			case GameState.GameOver:
 				Debug.Log("Game Over");
+				StartGameOver();
 				currentState = GameState.None;
 			break;
 		}
 		//Debug.Log(currentState);
 	}
-
+	void StartGameOver() {
+		gameOverManager.StartGameOver();	
+	}
+	void StartMediumEnding(){
+		gameOverManager.StartMediumEnding();
+	}
 	public enum GameState{
 		InitGame = 1,
 		Calling = 2,
 		InCall = 3,
 		ReinitManagers = 4,
 		GameOver = 5,
-		None = 6
+		MediumEnding = 6,
+		None = 7
 	}
 }

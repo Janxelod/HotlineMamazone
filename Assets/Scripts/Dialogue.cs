@@ -14,6 +14,8 @@ public class Dialogue {
 	public Department departmentDestiny; 
 	public Department departmentSoSoDestiny;
 	public int audioQuantity;
+	public AudioClip[] audioList;
+	public int currentAudio;
 	// Use this for initialization
 	public Dialogue(string eventName,int audioQuantity, Difficulty dificult, string depaBon, string depaMoy, string questionMessage, int positive, int negative){
 		this.levelDifficulty = dificult;
@@ -25,10 +27,34 @@ public class Dialogue {
 		this.negativeScore = negative;
 		this.eventName = eventName;
 		this.questionMessageSplit = splitQuestionMessage(this.questionMessage);
+		this.currentAudio = 0;
+		SetAudioList();
 	}
-
+	public float getCurrentDialogueLenght(){
+		return audioList[currentAudio].length;
+	}
+	public void SetAudioList(){
+		audioList = new AudioClip[audioQuantity];
+		AudioClip audioTemp = null;
+		for (int i = 0; i < audioQuantity; i++) {
+			string audioName = eventName+"_"+(i+1).ToString();
+			string audioPath = "Sounds/Dialogue/"+audioName;
+			audioTemp = Resources.Load(audioPath) as AudioClip;
+			if(audioTemp!=null){
+				audioList[i] = audioTemp;
+				//Debug.Log("name: "+audioName+" , duration: "+audioTemp.length);
+			}else{
+				//Debug.Log(audioPath);
+			}
+		}
+	}
+	public void playAudio(AudioSource  audioSource){
+		audioSource.clip = audioList[currentAudio];
+		audioSource.Play();
+		currentAudio++;
+	}
 	public string[] splitQuestionMessage(string question) {
-		string[] stringSeparators = new string[] {"@","$"};
+		string[] stringSeparators = new string[] {"@"};
 		string[] result;
 
 		result = question.Split(stringSeparators, StringSplitOptions.None);

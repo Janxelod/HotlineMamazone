@@ -11,6 +11,7 @@ public class PhoneManager : MonoBehaviour {
 	public bool inCall;
 	public Dialogue currentDialogue;
 	public PlayerManager playerManager;
+	public int currentMistakes;
 	public enum PhoneCallState{
 		Correct = 1,
 		Incorrect = 2,
@@ -51,14 +52,19 @@ public class PhoneManager : MonoBehaviour {
 				Debug.Log("EXCELLENT!!");
 				currentPhoneCallState = PhoneCallState.Correct;
 				playerManager.AddScore(currentDialogue.positiveScore);
+				phoneMessage.GetComponents<AudioSource>()[2].Play();
 			}else {
 				playerManager.AddScore(currentDialogue.negativeScore);
 				currentPhoneCallState = PhoneCallState.Incorrect;
+				phoneMessage.GetComponents<AudioSource>()[1].Play();
+				//phoneMessage.GetComponents<AudioSource>()[3].PlayDelayed(3.5f);
 				Debug.Log("INCORRECT!!!");
 			}
 		}else {
 			playerManager.AddScore(currentDialogue.negativeScore);
 			currentPhoneCallState = PhoneCallState.Nothing;
+			phoneMessage.GetComponents<AudioSource>()[1].Play();
+			//phoneMessage.GetComponents<AudioSource>()[3].PlayDelayed(3.5f);
 			Debug.Log("SUPER INCORRECT!!!");
 		}
 	}
@@ -69,6 +75,7 @@ public class PhoneManager : MonoBehaviour {
 			if(isCalling) {
 				phoneNumber.SetActive(true);
 				phoneMessage.GetComponent<Animator>().SetBool("calling",false);
+				phoneMessage.GetComponent<AudioSource>().Stop();
 				playerManager.answerThePhone = true;
 				playerManager.currentState = PlayerManager.States.AnswerThePhone;
 				//isCalling = false;
@@ -76,7 +83,9 @@ public class PhoneManager : MonoBehaviour {
 				if(inCall) {
 					playerManager.currentState = PlayerManager.States.MakeACall;
 					//playerManager.makeAcall = true;
+					inCall = false;
 					CallPartner(phoneTextString);		
+
 				}
 			}
 		}else{
@@ -91,12 +100,16 @@ public class PhoneManager : MonoBehaviour {
 						phoneText.text = phoneTextString + key;
 					}
 				}
+				if(key != "enter"){
+					GetComponents<AudioSource>()[int.Parse(key) + 1].Play();
+				}
 			}
 		}
 	}
 	public void SetCurrentCall(Dialogue newDialogue) {
 		currentDialogue = newDialogue;
 		phoneMessage.GetComponent<Animator>().SetBool("calling",true);
+		phoneMessage.GetComponent<AudioSource>().Play();
 		phoneNumber.SetActive(false);
 		isCalling = true;
 	}
