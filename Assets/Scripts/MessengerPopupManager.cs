@@ -23,13 +23,16 @@ public class MessengerPopupManager : MonoBehaviour {
 	void reshuffle(GameObject[] list)
 	{
 		// Knuth shuffle algorithm :: courtesy of Wikipedia :)
-		for (int t = 0; t < list.Length; t++ )
-		{
+		for (int t = 0; t < list.Length; t++ ) {
 			GameObject tmp = list[t];
 			int r = Random.Range(t, list.Length);
 			list[t] = list[r];
 			list[r] = tmp;
 		}
+		for (int i = 0; i < list.Length; i++ ) {
+			list[i].transform.SetSiblingIndex(i);
+		}
+
 	}
 	// Update is called once per frame
 	void Update () {

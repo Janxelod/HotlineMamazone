@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class InputManager : MonoBehaviour
@@ -6,7 +7,8 @@ public class InputManager : MonoBehaviour
     private bool draggingItem = false;
     private GameObject draggedObject;
     private Vector2 touchOffset;
-    
+	public  RectTransform limitUp;
+	public RectTransform limitDown;
 	void Update ()
 	{
 	    if (HasInput)
@@ -36,7 +38,13 @@ public class InputManager : MonoBehaviour
 				Vector2 newPosition = inputPosition + touchOffset;
 				draggedObject.transform.position = new Vector3(newPosition.x,newPosition.y,0);
 				Vector3 anchoredPosition = draggedObject.GetComponent<RectTransform>().anchoredPosition3D;
-				draggedObject.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(anchoredPosition.x,anchoredPosition.y,0);
+				float width = draggedObject.GetComponent<RectTransform>().rect.width * draggedObject.GetComponent<RectTransform>().localScale.x;
+				float height = draggedObject.GetComponent<RectTransform>().rect.height * draggedObject.GetComponent<RectTransform>().localScale.y;
+				float newPosX = Mathf.Clamp(anchoredPosition.x,limitDown.anchoredPosition3D.x + (width/2), limitUp.anchoredPosition3D.x - (width/2));
+				float newPosY = Mathf.Clamp(anchoredPosition.y,limitDown.anchoredPosition3D.y + (height/2), limitUp.anchoredPosition3D.y - (height/2));
+
+				draggedObject.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(newPosX, newPosY, 0);
+				draggedObject.transform.SetAsLastSibling();
 				//draggedObject.transform.Translate(touchOffset,Space.World);//.anchoredPosition = newPosition;
 			}
         }

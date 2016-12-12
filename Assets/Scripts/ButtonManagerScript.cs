@@ -20,9 +20,9 @@ public class ButtonManagerScript : MonoBehaviour {
 		switch(key){
 			case "Start": startPanel.SetActive(true); break;
 			case "StartFromPanel": startPanel.SetActive(false); break;
-			case "PCDenied": myPC.SetActive(true); break;
-			case "MyDocumentsDenied": myDocuments.SetActive(true); break;
-			case "MyRecycleDenied": myRecycleBin.SetActive(true); break;
+			case "PCDenied": myPC.SetActive(true); myPC.transform.SetAsLastSibling(); break;
+			case "MyDocumentsDenied": myDocuments.SetActive(true); myDocuments.transform.SetAsLastSibling(); break;
+			case "MyRecycleDenied": myRecycleBin.SetActive(true); myRecycleBin.transform.SetAsLastSibling(); break;
 		}
 	}
 }
