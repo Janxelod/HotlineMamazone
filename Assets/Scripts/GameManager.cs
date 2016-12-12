@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour {
 		if(dialogueManager.isEndGame()){
 			dialogueManager.StopDialogue();
 			CancelInvoke();
+			currentState = GameState.None;
 			Invoke("StartMediumEndingState",3.5f);
 			Debug.Log("Is end game");
 		}else {
@@ -135,6 +136,7 @@ public class GameManager : MonoBehaviour {
 		gameOverManager.StartGameOver();	
 	}
 	void StartMediumEnding(){
+		Debug.Log ("Start medium ending");
 		gameOverManager.StartMediumEnding();
 	}
 	public enum GameState{
