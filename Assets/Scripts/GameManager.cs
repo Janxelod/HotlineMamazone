@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour {
 	public int currentMistakes;
 	public int MAX_CURRENT_MISTAKE;
 	public GamerOverManager gameOverManager;
+	public InitGameManager initGameManager;
+	public GameObject initBackground;
+	public GameObject gameTitle;
+	public GameObject backgroundTutoScreen;
 	//public GameObject gameOverScreen;
 	// Use this for initialization
 	void Start () {
@@ -25,10 +29,17 @@ public class GameManager : MonoBehaviour {
 		}
 		messengerPopUpManager = GameObject.Find("Messenger").GetComponent<MessengerPopupManager>();
 		scoreManager = GameObject.Find("Score").GetComponent<ScoreManager>();
-		currentState = GameState.InitGame;
-
+		currentState = GameState.None;
+		//currentState = GameState.InitGame;
 	}
-		
+	public void StartInitGame(){
+		currentState = GameState.InitGame;
+	}
+	void Awake(){
+		initBackground.SetActive(true);
+		gameTitle.SetActive(true);
+		backgroundTutoScreen.SetActive(true);
+	}
 	void StartGame() {
 		InitCall();
 		currentState = GameState.Calling;
@@ -130,6 +141,8 @@ public class GameManager : MonoBehaviour {
 				currentState = GameState.None;
 			break;
 		}
+
+
 		//Debug.Log(currentState);
 	}
 	void StartGameOver() {

@@ -79,6 +79,7 @@ public class PhoneManager : MonoBehaviour {
 				phoneBody.GetComponent<Animator>().SetBool("ringing",false);
 				phoneMessage.GetComponent<AudioSource>().Stop();
 				playerManager.answerThePhone = true;
+				phoneText.text = "";
 				playerManager.currentState = PlayerManager.States.AnswerThePhone;
 				//isCalling = false;
 			}else {
@@ -86,6 +87,7 @@ public class PhoneManager : MonoBehaviour {
 					playerManager.currentState = PlayerManager.States.MakeACall;
 					//playerManager.makeAcall = true;
 					inCall = false;
+					phoneText.text = "";
 					CallPartner(phoneTextString);		
 
 				}
@@ -99,7 +101,8 @@ public class PhoneManager : MonoBehaviour {
 			}else{
 				if(phoneTextString.Length<4){
 					if(key != "enter"){
-						phoneText.text = phoneTextString + key;
+						if(!isCalling)
+							phoneText.text = phoneTextString + key;
 					}
 				}
 				if(key != "enter"){
