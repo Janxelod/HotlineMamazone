@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GamerOverManager : MonoBehaviour {
 
@@ -30,6 +31,11 @@ public class GamerOverManager : MonoBehaviour {
 		popUpGoodEnding.SetActive(true);
 		//GameObject.Find("Messenger").SetActive(false);
 		GetComponents<AudioSource>()[2].Play();
+	}
+	public void RestartGame(){
+		GameObject initBackground = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().initBackground;
+		initBackground.SetActive(true);
+		initBackground.GetComponent<Animator>().SetBool("finishGame",true);
 	}
 	// Update is called once per frame
 	void Update () {

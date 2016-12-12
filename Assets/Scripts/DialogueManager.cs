@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour {
 		dialogueAudioSource = GetComponent<AudioSource>();
 	}
 	public bool isEndGame(){
-		return currentDialogueIndex  == dialogueList.Count;//== 3;// 
+		return currentDialogueIndex  == dialogueList.Count;// == 6;//
 	}
 	public void StartNewDialogue(){
 		dialogueWindow.SetActive(true);

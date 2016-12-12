@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class InitBackgroundScript : MonoBehaviour {
@@ -26,5 +27,8 @@ public class InitBackgroundScript : MonoBehaviour {
 	}
 	public void InitGame(){
 		GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartInitGame();
+	}
+	public void RestartGame(){
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex,LoadSceneMode.Single);
 	}
 }
