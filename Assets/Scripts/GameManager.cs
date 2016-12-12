@@ -94,6 +94,9 @@ public class GameManager : MonoBehaviour {
 	void StartMediumEndingState() {
 		currentState = GameState.MediumEnding;
 	}
+	void StartGoodEndingState() {
+		currentState = GameState.GoodEnding;
+	}
 	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
 	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
 	//REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN //REGARDER DEMAIN 
@@ -106,8 +109,11 @@ public class GameManager : MonoBehaviour {
 			dialogueManager.StopDialogue();
 			CancelInvoke();
 			currentState = GameState.None;
-			Invoke("StartMediumEndingState",3.5f);
-			Debug.Log("Is end game");
+			if(currentMistakes == 0)
+				Invoke("StartGoodEndingState",3.5f);
+			else
+				Invoke("StartMediumEndingState",3.5f);
+			//Debug.Log("Is end game");
 		}else {
 			currentState = GameState.None;
 			Invoke("StartNewCall",waitTimeNextDialogue);	
@@ -135,6 +141,10 @@ public class GameManager : MonoBehaviour {
 				StartMediumEnding();
 				currentState = GameState.None;
 			break;
+			case GameState.GoodEnding:
+				StartGoodEnding();
+				currentState = GameState.None;	
+			break;
 			case GameState.GameOver:
 				Debug.Log("Game Over");
 				StartGameOver();
@@ -144,6 +154,9 @@ public class GameManager : MonoBehaviour {
 
 
 		//Debug.Log(currentState);
+	}
+	void StartGoodEnding() {
+		gameOverManager.StartGoodEnding();
 	}
 	void StartGameOver() {
 		gameOverManager.StartGameOver();	
@@ -159,6 +172,7 @@ public class GameManager : MonoBehaviour {
 		ReinitManagers = 4,
 		GameOver = 5,
 		MediumEnding = 6,
-		None = 7
+		GoodEnding = 7,
+		None = 8
 	}
 }
