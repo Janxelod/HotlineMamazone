@@ -7,6 +7,9 @@ public class ButtonManagerScript : MonoBehaviour {
 	public GameObject myPC;
 	public GameObject myDocuments;
 	public GameObject myRecycleBin;
+	public GameObject creditButton;
+	public GameObject quitButton;
+	public GameObject creditsWindow;
 	// Use this for initialization
 	void Start () {
 	
@@ -23,6 +26,12 @@ public class ButtonManagerScript : MonoBehaviour {
 			case "PCDenied": myPC.SetActive(true); myPC.transform.SetAsLastSibling(); break;
 			case "MyDocumentsDenied": myDocuments.SetActive(true); myDocuments.transform.SetAsLastSibling(); break;
 			case "MyRecycleDenied": myRecycleBin.SetActive(true); myRecycleBin.transform.SetAsLastSibling(); break;
+			case "Credits":  
+				creditsWindow.SetActive(true); 
+				creditsWindow.transform.SetAsLastSibling(); 
+				startPanel.SetActive(false); 
+			break;
+			case "Quit": Application.Quit(); break;
 		}
 	}
 }

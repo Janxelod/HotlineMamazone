@@ -17,6 +17,7 @@ public class MessengerPopupManager : MonoBehaviour {
 		if(currentMessengerWindows<messengerPopUpList.Length) {
 			GetComponent<AudioSource>().Play();
 			messengerPopUpList[currentMessengerWindows].SetActive(true);
+			messengerPopUpList[currentMessengerWindows].transform.SetAsLastSibling();
 			currentMessengerWindows++;	
 		}
 	}

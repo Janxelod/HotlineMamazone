@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour {
 		dialogueAudioSource = GetComponent<AudioSource>();
 	}
 	public bool isEndGame(){
-		return currentDialogueIndex  == 3;// == dialogueList.Count;//
+		return currentDialogueIndex  == dialogueList.Count;//== 3;// 
 	}
 	public void StartNewDialogue(){
 		dialogueWindow.SetActive(true);
@@ -44,16 +44,8 @@ public class DialogueManager : MonoBehaviour {
 	void DialogueCreationTest(){
 		Dialogue diag = null;
 		factory = new DialogueFactory();
+		factory.ShuffleElements();
 		dialogueList = factory.dialogueList;
-		/*for (int i = 0; i < 10; i++) {
-			diag = new Dialogue("Order Not recieved",3,Dialogue.Difficulty.Level1,"sh","ma",
-				("DiagIndex:"+(i+1).ToString())+"Line 1 asdasdas,asdasda@Line 2 asdasdasdasda, asdasda@Line 3 1231232312321, asdas@Line 4 asdasda123123" +
-				"@Line 5 asdasdas,asdasda@Line 6 asdasdasdasda, asdasda@Line 7 1231232312321, asdas@Line 8 asdasda123123" + 
-				"@Line 9 asdasdas,asdasda@Line 10 asdasdasdasda, asdasda@Line 11 1231232312321, asdas@Line 12 asdasda123123" + 
-				"@Line 13 asdasdas,asdasda@Line 14 asdasdasdasda, asdasda@Line 15 1231232312321, asdas@Line 16 asdasda123123"+("DiagIndex:"+(i+1).ToString())
-				, 240, 111);
-			dialogueList.Add(diag);
-		}*/
 	}
 
 	void StartMessage() {
@@ -61,9 +53,6 @@ public class DialogueManager : MonoBehaviour {
 		dialogueTextReference.text = "";
 		currentIndexDialogList = 0;
 		currentIndexDialogChar = 0;
-		//Debug.Log(currentDialogue.questionMessageSplit[currentIndexDialogList]);
-		//Debug.Log(currentDialogue.getCurrentDialogueLenght());
-		//currentDialogue.playAudio(dialogueAudioSource);
 		PlayCurrentPhrase();
 		Invoke("ShowCharacters",frequencyPerChar);
 	}
@@ -73,7 +62,8 @@ public class DialogueManager : MonoBehaviour {
 			string currentText = dialogueTextReference.text;
 			if(currentIndexDialogChar<currentDialogue.questionMessageSplit[currentIndexDialogList].Length){
 				lastChar = currentDialogue.questionMessageSplit[currentIndexDialogList][currentIndexDialogChar];
-				currentText += lastChar;
+				if(lastChar!='$')
+					currentText += lastChar;
 				dialogueTextReference.text = currentText;
 				currentIndexDialogChar++;
 				Invoke("ShowCharacters",frequencyPerChar);
