@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class PhoneManager : MonoBehaviour {
 	public GameObject phoneNumber;
 	public GameObject phoneMessage;
+	public GameObject phoneBody;
 	public Dictionary<string, Dialogue.Department> departmentPhoneList;
 	public bool isCalling;
 	public bool inCall;
@@ -75,6 +76,7 @@ public class PhoneManager : MonoBehaviour {
 			if(isCalling) {
 				phoneNumber.SetActive(true);
 				phoneMessage.GetComponent<Animator>().SetBool("calling",false);
+				phoneBody.GetComponent<Animator>().SetBool("ringing",false);
 				phoneMessage.GetComponent<AudioSource>().Stop();
 				playerManager.answerThePhone = true;
 				playerManager.currentState = PlayerManager.States.AnswerThePhone;
@@ -109,6 +111,7 @@ public class PhoneManager : MonoBehaviour {
 	public void SetCurrentCall(Dialogue newDialogue) {
 		currentDialogue = newDialogue;
 		phoneMessage.GetComponent<Animator>().SetBool("calling",true);
+		phoneBody.GetComponent<Animator>().SetBool("ringing",true);
 		phoneMessage.GetComponent<AudioSource>().Play();
 		phoneNumber.SetActive(false);
 		isCalling = true;
