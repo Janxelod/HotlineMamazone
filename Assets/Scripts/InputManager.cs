@@ -38,8 +38,9 @@ public class InputManager : MonoBehaviour
 				Vector2 newPosition = inputPosition + touchOffset;
 				draggedObject.transform.position = new Vector3(newPosition.x,newPosition.y,0);
 				Vector3 anchoredPosition = draggedObject.GetComponent<RectTransform>().anchoredPosition3D;
-				float width = draggedObject.GetComponent<RectTransform>().rect.width * draggedObject.GetComponent<RectTransform>().localScale.x;
-				float height = draggedObject.GetComponent<RectTransform>().rect.height * draggedObject.GetComponent<RectTransform>().localScale.y;
+				float width = draggedObject.GetComponent<RectTransform>().rect.width;
+				//Debug.Log(draggedObject.GetComponent<RectTransform>().localScale.x+" , "+draggedObject.GetComponent<RectTransform>().localScale.y);
+				float height = draggedObject.GetComponent<RectTransform>().rect.height;
 				float newPosX = Mathf.Clamp(anchoredPosition.x,limitDown.anchoredPosition3D.x + (width/2), limitUp.anchoredPosition3D.x - (width/2));
 				float newPosY = Mathf.Clamp(anchoredPosition.y,limitDown.anchoredPosition3D.y + (height/2), limitUp.anchoredPosition3D.y - (height/2));
 
